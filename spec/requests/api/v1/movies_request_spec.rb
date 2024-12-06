@@ -1,14 +1,13 @@
 require "rails_helper"
 
-RSpec.describe "Top Rated Movies Endpoint" do
-  describe "happy path" do
+RSpec.describe "TMDB API" do
+  describe "index" do
     it "can retrieve the first 20 top rated movies" do
       stubbed_response = File.read("spec/fixtures/tmdb_top_rated_search.json")
 
-      stub_request(:get, "https://api.themoviedb.org/3/movie/top_rated?api_key=#{Rails.application.credentials.tmdb[:key]}&language=en-US&page=1")
+      stub_request(:get, "https://api.themoviedb.org/3/movie/top_rated?api_key=#{Rails.application.credentials.tmdb[:key]}")
         .to_return(status: 200, body: stubbed_response)
 
-      
       get "/api/v1/movies"
 
       json = JSON.parse(response.body, symbolize_names: true)
@@ -27,6 +26,19 @@ RSpec.describe "Top Rated Movies Endpoint" do
         expect(movie[:attributes]).to have_key(:vote_average)
         expect(movie[:attributes][:vote_average]).to be_a(Float)
       end
+    end
+
+    it "can retrieve movies based on seach query from the request" do
+      stubbed_response = File.read("spec/fixtures/tmdb_params_search.json")
+
+      stub_request(:get, "https://api.themoviedb.org/3/search/movie?api_key=#{Rails.application.credentials.tmdb[:key]}&query=Lord%20of%20the%20Rings")
+        .to_return(status: 200, body: stubbed_response)
+      
+      get "/api/v1/movies", params: { query: "Lord of the Rings"}
+
+      json = JSON.parse(response.body, symbolize_names: true)
+
+      binding.pry
     end
   end
 end
