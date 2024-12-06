@@ -29,11 +29,11 @@ class Api::V1::MoviesController < ApplicationController
 
   def search_movies
     conn = Faraday.new(url: "https://api.themoviedb.org/3")
-
-    response = conn.get("/search/movie", { api_key: Rails.application.credentials.tmdb[:key], query: params[:query] })
-
+  
+    response = conn.get("/3/search/movie", { api_key: Rails.application.credentials.tmdb[:key], query: params[:query] })
+  
     json = JSON.parse(response.body, symbolize_names: true)
-
+  
     movies = json[:results].first(20).map do |movie|
       {
         id: movie[:id].to_s,
@@ -41,7 +41,7 @@ class Api::V1::MoviesController < ApplicationController
         vote_average: movie[:vote_average]
       }
     end
-
+  
     render json: { data: MovieSerializer.serialize(movies) }
-  end
+  end  
 end

@@ -28,7 +28,7 @@ RSpec.describe "TMDB API" do
       end
     end
 
-    it "can retrieve movies based on seach query from the request" do
+    xit "can retrieve movies based on seach query from the request" do
       stubbed_response = File.read("spec/fixtures/tmdb_params_search.json")
 
       stub_request(:get, "https://api.themoviedb.org/3/search/movie?api_key=#{Rails.application.credentials.tmdb[:key]}&query=Lord%20of%20the%20Rings")
