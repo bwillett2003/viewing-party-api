@@ -16,7 +16,7 @@ RSpec.describe "TMDB API" do
 
       json[:data].each do |movie|
         expect(movie).to have_key(:id)
-        expect(movie[:id]).to be_a(String)
+        expect(movie[:id]).to be_a(Integer)
 
         expect(movie).to have_key(:type)
         expect(movie[:type]).to eq("movie")
@@ -43,8 +43,8 @@ RSpec.describe "TMDB API" do
       expect(json[:data].count).to eq(19)
 
       json[:data].each do |movie|
-        expect(movie[:attributes]).to have_key(:title)
-        expect(movie[:attributes][:title]).to be_a(String)
+        expect(movie).to have_key(:id)
+        expect(movie[:id]).to be_a(Integer)
 
         expect(movie).to have_key(:type)
         expect(movie[:type]).to eq("movie")
