@@ -10,7 +10,7 @@ class Api::V1::MoviesController < ApplicationController
   private
 
   def top_rated_movies
-    conn = Faraday.new(url: "https://api.themoviedb.org/3")
+    conn = Faraday.new(url: "https://api.themoviedb.org")
     
     response = conn.get("https://api.themoviedb.org/3/movie/top_rated?api_key=#{Rails.application.credentials.tmdb[:key]}")
     
@@ -28,7 +28,7 @@ class Api::V1::MoviesController < ApplicationController
   end
 
   def search_movies
-    conn = Faraday.new(url: "https://api.themoviedb.org/3")
+    conn = Faraday.new(url: "https://api.themoviedb.org")
   
     response = conn.get("/3/search/movie", { api_key: Rails.application.credentials.tmdb[:key], query: params[:query] })
   
